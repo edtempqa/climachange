@@ -1,0 +1,22 @@
+data:
+  DOWNLOAD_DATA: True
+  DATA_FILE: bucharest_co2_temp_2002_2023.grib
+  DATA_SOURCE: cams-global-ghg-reanalysis-egg4-monthly
+  DATA_FILE_ZIP: bucharest_co2_temp_2022_2023.zip
+  ENGINE: cfgrib
+
+variables:
+  TEMPERATURE_FIELD_KELVIN: 2t
+  TEMPERATURE_FIELD_CELSIUS: temp
+  CO2_FIELD: co2
+  CO2_FIELD_PPM: co2_ppm
+  CO2_VARIABLE: carbon_dioxide
+  TIME_FIELD: time
+  TIME_VARIABLE: 2m_temperature
+training:
+  RETRAIN: true
+  MODEL_PATH: lstm_model_3000.pt
+  SCALER_PATH: scaler.gz
+  SEQ_LENGTH: 120
+  N_PREDICT: 12
+  EPOCHS: 3000

@@ -1,0 +1,9 @@
+cdsapi
+pyyaml
+torch
+pandas
+numpy
+matplotlib
+scikit-learn
+xarray
+joblib

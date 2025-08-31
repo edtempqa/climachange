@@ -1,0 +1,10 @@
+# Ignore everything
+*
+venv/
+.idea/
+
+# But not these files...
+!*.py
+!*.yaml
+!*.txt
+!.gitignore
