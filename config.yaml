@@ -14,8 +14,8 @@ variables:
   TIME_FIELD: time
   TIME_VARIABLE: 2m_temperature
 training:
-  RETRAIN: true
-  MODEL_PATH: lstm_model_3000.pt
+  RETRAIN: True
+  MODEL_PATH: lstm_model.pt
   SCALER_PATH: scaler.gz
   SEQ_LENGTH: 120
   N_PREDICT: 12
