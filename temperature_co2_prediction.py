@@ -1,7 +1,7 @@
 import os
 from sklearn.preprocessing import MinMaxScaler
 from data_loader import *
-from visualization import plot_predictions
+from visualization import *
 from network import *
 from configuration import *
 
@@ -9,6 +9,12 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 logging.info(f"Running on: '%s'", device)
+
+LABEL_ACTUAL_TEMP = "Actual temperature"
+LABEL_PREDICTED_TEMP = "Predicted temperature"
+LABEL_CO2_REAL = "CO2 real - 600"
+LABEL_CO2_PREDICTED = "CO2 predicted - 600"
+TITLE = "Temperature and CO2 - Real vs Predicted"
 
 def main(retrain: bool = False) -> Tuple[pd.DatetimeIndex, pd.DataFrame, pd.DataFrame]:
     df = process_data(DATA_FILE)
@@ -32,5 +38,13 @@ def main(retrain: bool = False) -> Tuple[pd.DatetimeIndex, pd.DataFrame, pd.Data
 if __name__ == "__main__":
     if DOWNLOAD_DATA:  # True to download data
         retrieve_data(DATA_SOURCE, DATA_FILE, GRIB_FORMAT)
+
     comparison_dates, real, predicted = main(retrain=RETRAIN) # False to load existing model and scaler
-    plot_predictions(comparison_dates, real, predicted)
+
+    temperature_real = SeriesDescriptor(data=real[TEMPERATURE_FIELD_CELSIUS], label=LABEL_ACTUAL_TEMP, color="tab:blue", marker='o')
+    temperature_predicted = SeriesDescriptor(data=predicted[TEMPERATURE_FIELD_CELSIUS], label=LABEL_PREDICTED_TEMP, color="tab:blue", line_style="--", marker='x')
+    co2_real = SeriesDescriptor(data=real[CO2_FIELD_PPM] - 600, label=LABEL_CO2_REAL, color="tab:green", marker='o')
+    co2_predicted = SeriesDescriptor(data=predicted[CO2_FIELD_PPM] - 600, label=LABEL_CO2_PREDICTED, color="tab:green", line_style="--", marker='x')
+
+    plot_series(comparison_dates, [temperature_real, temperature_predicted, co2_real, co2_predicted], TITLE)
+
